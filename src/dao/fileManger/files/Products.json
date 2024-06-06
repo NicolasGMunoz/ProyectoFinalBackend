@@ -1,0 +1,92 @@
+[
+	{
+		"title": "Core i7 8700k",
+		"description": "Microprocesador intel i7 8va Generacion",
+		"price": 2000,
+		"thumbnail": "/core-i7-8700k.png",
+		"code": "CPU001",
+		"stock": 25,
+		"id": 1
+	},
+	{
+		"title": "Core i5 8400",
+		"description": "Microprocesador intel i5 8va Generacion",
+		"price": 2000,
+		"thumbnail": "/core-i5-8400.png",
+		"code": "CPU002",
+		"stock": 25,
+		"id": 2
+	},
+	{
+		"title": "Corsair 32GB",
+		"description": "Memoria Ram Corsair 32GB DDR4",
+		"price": 1500,
+		"thumbnail": "/corsair-32GB.png",
+		"code": "Mem001",
+		"stock": 15,
+		"id": 3
+	},
+	{
+		"title": "Corsair 8GB",
+		"description": "Memoria Ram Corsair 8GB DDR4",
+		"price": 600,
+		"thumbnail": "/corsair-8GB.png",
+		"code": "Mem002",
+		"stock": 10,
+		"id": 4
+	},
+	{
+		"title": "1050TI 4GB",
+		"description": "Placa de video Asus 1050TI 4GB",
+		"price": 2500,
+		"thumbnail": "/1050TI-4GB.png",
+		"code": "GPU001",
+		"stock": 50,
+		"id": 5
+	},
+	{
+		"title": "Ryzen 7 3700X",
+		"description": "Microprocesador AMD Ryzen 7 3ra Generacion",
+		"price": 2200,
+		"thumbnail": "/ryzen-7-3700x.png",
+		"code": "CPU003",
+		"stock": 20,
+		"id": 6
+	},
+	{
+		"title": "Core i3 8100",
+		"description": "Microprocesador intel i3 8va Generacion",
+		"price": 1200,
+		"thumbnail": "/core-i3-8100.png",
+		"code": "CPU004",
+		"stock": 30,
+		"id": 7
+	},
+	{
+		"title": "Corsair 16GB",
+		"description": "Memoria Ram Corsair 16GB DDR4",
+		"price": 1000,
+		"thumbnail": "/corsair-16GB.png",
+		"code": "Mem003",
+		"stock": 10,
+		"id": 8
+	},
+	{
+		"title": "GTX 1660 6GB",
+		"description": "Placa de video Nvidia GTX 1660 6GB",
+		"price": 2800,
+		"thumbnail": "/gtx-1660-6GB.png",
+		"code": "GPU002",
+		"stock": 40,
+		"id": 9
+	},
+	{
+		"title": "AMD RX 580 8GB",
+		"description": "Placa de video AMD RX 580 8GB",
+		"price": 2000,
+		"thumbnail": "/amd-rx-580-8GB.png",
+		"code": "GPU003",
+		"stock": 35,
+		"id": 10
+	}
+]
