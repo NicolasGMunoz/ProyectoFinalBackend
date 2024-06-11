@@ -28,36 +28,38 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
 #### Instalación de Node.js
 
-#### En Windows/MacOS
+**En Windows/MacOS**
 
 1. Ve a [nodejs.org](https://nodejs.org/).
 2. Descarga el instalador de la versión LTS (Long Term Support).
 3. Ejecuta el instalador y sigue las instrucciones.
 
-#### En Linux
+**En Linux**
 
 Usa el siguiente comando para instalar Node.js desde el repositorio oficial de NodeSource:
 
 ```sh
 curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get install -y nodejs
+```
 
-Verifica la instalación:
-
+**Verifica la instalación:**
+```sh
 node -v
 npm -v
+```
 
-
-Inicializa un nuevo proyecto de Node.js:
-
+**Inicializa un nuevo proyecto de Node.js:**
+```sh
 npm init -y
+```
 
-Instalación de Dependencias
+##### Instalación de Dependencias
 Agrega las siguientes dependencias a tu proyecto utilizando:
-
+```sh
 npm install @faker-js/faker@8.3.1 bcrypt@5.1.1 commander@11.1.0 connect-mongo@5.1.0 cookie-parser@1.4.6 dotenv@16.3.1 express@4.18.2 express-handlebars@7.1.2 express-session@1.17.3 jsonwebtoken@9.0.2 luxon@3.4.4 mongoose@8.0.0 mongoose-paginate-v2@1.7.4 multer@1.4.5-lts.1 nodemailer@6.9.8 passport@0.7.0 passport-github2@0.1.12 passport-jwt@4.0.1 passport-local@1.0.0 socket.io@4.7.2 swagger-jsdoc@6.2.8 swagger-ui-express@5.0.0 uuid@9.0.1 winston@3.11.0 zod@3.22.4
-
-Resumen de Dependencias:
+```
+**Resumen de Dependencias:**
 
 @faker-js/faker: Generador de datos falsos.
 bcrypt: Librería para el hashing de contraseñas.
@@ -85,3 +87,9 @@ uuid: Generador de identificadores únicos.
 winston: Librería de logging.
 zod: Librería para la validación de datos.
 
+###### Observaciones
+**En el caso de que usted ya tenga instalado node y haya descargado este repositorio de** **manera completa, no es necesario realizar los pasos anteriores.**
+**Solo debe posicionarse en la ruta main de el proyecto y utilizar el siguiente comando:**
+```sh
+node app.js
+```
