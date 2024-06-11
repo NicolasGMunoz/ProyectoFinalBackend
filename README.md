@@ -87,7 +87,7 @@ uuid: Generador de identificadores únicos.
 winston: Librería de logging.
 zod: Librería para la validación de datos.
 
-###### Observaciones
+# Observaciones
 **En el caso de que usted ya tenga instalado node y haya descargado este repositorio de** **manera completa, no es necesario realizar los pasos anteriores.**
 **Solo debe posicionarse en la ruta main de el proyecto y utilizar el siguiente comando:**
 ```sh
