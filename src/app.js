@@ -6,7 +6,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import { __dirname } from "./util.js";
-import { __mainDirname } from "./utils.js"
+import { __mainDirname } from "./util.js"
 import configs from "./config.js";
 import { initializePassport } from "./config/passport.config.js";
 import passport from "passport";
