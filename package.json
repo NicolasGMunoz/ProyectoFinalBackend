@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/app.js --mode=DEV",
-    "start": "node src/app.js --mode=PROD",
+    "start": "node ./src/app.js",
     "dev:test": "node --watch src/app.js --mode=TEST",
     "test": "mocha test/integration/*/*.test.js --mode=TEST"
   },
