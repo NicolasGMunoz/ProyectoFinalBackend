@@ -4,18 +4,16 @@ import usersModel from "../dao/dbManager/models/user.model.js";
 import local from "passport-local"
 import { createHash , isValidPassword } from '../util.js'
 import { passportStrategiesEnum } from './enums.js'
-import { PRIVATE_KEY_JWT } from './constant.js'
 import jwt from'passport-jwt'
-import { addLogger } from "../utils/logger.js";
 import configs from "../config.js";
-
-const LocalStrategy = local.Strategy;
 
 const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
 
-export const initializePassport = () => {
+// User and Password authentication
+const LocalStrategy = local.Strategy;
 
+export const initializePassport = () => {
 	passport.use(
 		passportStrategiesEnum.JWT,
 		new JWTStrategy(
@@ -34,12 +32,13 @@ export const initializePassport = () => {
 	);
 
 
+	// GITHUB authentication
 	passport.use(
-		"github",
+		passportStrategiesEnum.GITHUB,
 		new GitHubStrategy(
 			{
-				clientID: " Iv1.88453ce422325db5",
-				clientSecret: "23f7e31d190791510bc97f7643c9b84b468dc34d",
+				clientID: configs.clientID,
+				clientSecret: configs.clientSecret,
 				callbackURL: "http://localhost:8080/api/sessions/github-callback",
 				scope: ["user:email"]
 			},
@@ -54,7 +53,7 @@ export const initializePassport = () => {
 							last_name: "",
 							age: 18,
 							email,
-							password: "",
+							password: "A1B2c3",
 							role: "user"
 						};
 						const result = await usersModel.create(newUser);
@@ -71,6 +70,7 @@ export const initializePassport = () => {
 	);
 
 
+	// Local authentication
 	passport.use(
 		"local-register",
 		new LocalStrategy(
@@ -103,6 +103,9 @@ export const initializePassport = () => {
 			}
 		)
 	);
+
+
+	// Local login
 	passport.use(
 		"local-login",
 		new LocalStrategy(
@@ -138,26 +141,31 @@ export const initializePassport = () => {
 		)
 	);
 
+
 	passport.serializeUser((user, done) => {
 		done(null, user._id);
 	});
 	passport.deserializeUser(async (id, done) => {
 		if (id == 1)
-			return done(null, { first_name: `Admin Coder`, email: "adminCoder@coder.com" , role: "admin" });
+			return done(null, {
+				first_name: `Admin Coder`,
+				email: "adminCoder@coder.com",
+				role: "admin"
+			});
 		const user = await usersModel.findById(id);
 		done(null, user);
 	});
 };
 
 const cookieExtractor = (req) => {
-	let token = null
-	if(req && req.cookies){
-	  token = req.cookies['coderCookieToken']
+	let token = null;
+	if (req && req.cookies) {
+		token = req.cookies["coderCookieToken"];
 	}
-	return token
-  }
-  
-  export const passportCall = (strategy) => (req, res, next) => {
+	return token;
+};
+
+export const passportCall = (strategy) => (req, res, next) => {
 	if (strategy === passportStrategiesEnum.JWT) {
 		passport.authenticate(
 			strategy,
@@ -168,6 +176,33 @@ const cookieExtractor = (req) => {
 					req.logger.debug(`${info.messages ? info.messages : info.toString()}`)
 					return res.status(401).send({
 						status: "error",
+						messages: info.messages ? info.messages : info.toString()
+					});
+				}
+				req.user = user;
+
+				next();
+			}
+		)(req, res, next);
+	} else {
+		next();
+	}
+};
+
+export const passportCallViews = (strategy) => (req, res, next) => {
+	if (strategy === passportStrategiesEnum.JWT) {
+
+		passport.authenticate(
+			strategy,
+			{ session: false },
+			function (err, user, info) {
+				if (err) return next(err);
+				if (!user) {
+					req.logger.debug(`${info.messages ? info.messages : info.toString()}`)
+					if(req.path === '/') return res.redirect("/login")
+					return res.status(401).render("401",{
+						status: "error",
+						style: "401.css",
 						messages: info.messages ? info.messages : info.toString()
 					});
 				}

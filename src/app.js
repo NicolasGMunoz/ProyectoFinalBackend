@@ -17,6 +17,9 @@ import ViewsRouter from "./routes/views.routes.js";
 import UsersRouter from "./routes/users.router.js"
 import errorHandler from './middlewares/errors/index.js';
 import { addLogger } from "./utils/logger.js";
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
+import MessageManager from './dao/dbManager/managers/messages.manager.js'
 
 
 
@@ -29,7 +32,7 @@ const swaggerOptions = {
 	  openapi: '3.0.1',
 	  info: {
 		title: 'Documentación del proyecto API de ecommerce',
-		description: 'API pensada en resolver el proceso de compras y ventas de productos en una plataforma ecommerce'
+		description: 'API pensada en el proceso de compras y ventas de productos en una plataforma ecommerce'
 	  }
 	},
 	apis: [`${__mainDirname}/docs/**/*.yaml`]
@@ -96,3 +99,28 @@ try {
 	console.log(error.message)
 	mongoose.disconnect()
 }
+
+const socketServer = new Server(server);
+
+socketServer.on("connection", (socket) => {
+	const messagesManager = new MessageManager();
+	console.log("Cliente conectado");
+
+	socket.on("message", async (data) => {
+		try {
+			const result = await messagesManager.create(data);
+			const messages = await messagesManager.getAll();
+			socketServer.emit("messageLogs", messages);
+		} catch (error) {
+			console.error({ error: error.message });
+		}
+	});
+
+	socket.on("authenticated", async (data) => {
+		const messages = await messagesManager.getAll();
+		socket.emit("messageLogs", messages);
+		socket.broadcast.emit("newUserConnected", data);
+	});
+});
+
+app.set("socketio", socketServer);

@@ -1,7 +1,20 @@
-import { updatePassword as updatePasswordServices} from "../services/sessions.services.js"
 import { changeRoleUser as changeRoleUserServices } from "../services/sessions.services.js"
 import { uploadDocuments as uploadDocumentsServices } from "../services/users.services.js"
 import { RequiredDocumentsNotFound, UserNotFoundError } from "../utils/custom.exceptions.js"
+import { getUserById as getUserByIdServices } from "../services/users.services.js"
+import { getAllUsers as getAllUsersServices } from "../services/users.services.js"
+import { deleteInactiveUsers as deleteInactiveUsersServices } from "../services/users.services.js"
+import { deleteOneUser as deleteOneUserServices } from "../services/users.services.js"
+
+export const getAllUsers = async (req, res) => {
+	try {
+		const users = await getAllUsersServices()
+		return res.sendSuccess(users)
+	} catch (error) {
+		req.logger.fatal(`${error.message}`)
+		return res.sendServerError(error.message)
+	}
+}
 
 export const changeRoleUser = async (req, res) => {
 	try {
@@ -26,7 +39,7 @@ export const changeRoleUser = async (req, res) => {
 export const getUserById = async (req, res) => {
 	try {
 		const { uid } = req.params
-		const user = await getUserByIdService(uid)
+		const user = await getUserByIdServices(uid)
 		return res.sendSuccess(user)
 	} catch (error) {
 		if (error instanceof UserNotFoundError) {
@@ -43,7 +56,7 @@ export const uploadDocuments = async (req, res) => {
 	try {
 		const files = req.files
 		const { uid } = req.params
-		const user = await getUserByIdService(uid)
+		const user = await getUserByIdServices(uid)
 
 		const result = await uploadDocumentsServices(user, files)
 		return res.sendSuccess(result)
@@ -55,5 +68,38 @@ export const uploadDocuments = async (req, res) => {
 			req.logger.fatal(`${error.message}`)
 			return res.sendServerError(error.message)
 		}
+	}
+}
+
+export const deleteOneUser = async (req, res) => {
+	try {
+		const { uid } = req.params
+		const userExists = await getUserByIdServices(uid)
+		if(!userExists) {
+			throw new UserNotFoundError("User doesn't exists")
+		}
+		
+		const deletedUser = await deleteOneUserServices(uid)
+		return res.sendSuccess(deletedUser)
+	} catch (error) {
+		if(error instanceof UserNotFoundError){
+			req.logger.error(`${error.message}`)
+			return res.sendClientError(error.message)
+		}else{
+			req.logger.fatal(`${error.message}`)
+		return res.sendServerError(error.message)
+		}
+		
+		
+	}
+}
+
+export const deleteInactiveUsers = async (req, res) => {
+	try {
+		const inactiveUsers = await deleteInactiveUsersServices()
+		return res.sendSuccess(inactiveUsers)
+	} catch (error) {
+		req.logger.fatal(`${error.message}`)
+		return res.sendServerError(error.message)
 	}
 }

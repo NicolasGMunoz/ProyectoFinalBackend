@@ -4,8 +4,8 @@ import configs from "../config.js"
 const persistence = configs.persistence
 
 
-let Products, Carts, Users, Tickets
-let tts
+let Products, Carts, Users, Tickets, Messages
+
 
 switch(persistence) {
   case 'MONGO':
@@ -18,11 +18,13 @@ switch(persistence) {
       const { default: CartsMongo } = await import('./dbManagers/carts.manager.js')
       const { default: UsersMongo } = await import('./dbManagers/users.manager.js')
       const { default: TicketsMongo } = await import('./dbManagers/tickets.manager.js')
+      const { default: MessagesMongo } = await import('./dbManager/managers/messages.manager.js')
 
       Products = ProductsMongo
       Carts = CartsMongo
       Users = UsersMongo
       Tickets = TicketsMongo
+      Messages = MessagesMongo
    
     } catch (error) {
       console.log(error.message)
@@ -43,5 +45,5 @@ export {
   Carts,
   Users,
   Tickets,
-  tts
+  Messages
 }

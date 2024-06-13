@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { accessRolesEnum, passportStrategiesEnum } from "../config/enums.js";
-import { handlePolicies } from "../middlewares/auth.js";
-import { passportCall } from "../config/passport.config.js";
-import { generateCustomResponse } from "../middlewares/responses.js";
+import { Router } from "express"
+import { accessRolesEnum, passportStrategiesEnum } from "../config/enums.js"
+import { handlePoliciesViews } from "../middlewares/auth.js"
+import { passportCallViews } from "../config/passport.config.js"
+import { generateCustomResponse } from "../middlewares/responses.js"
 import {
 	cartDetail,
 	chat,
@@ -13,81 +13,89 @@ import {
 	realTimeProductsView,
 	register,
 	resetPasswordView,
-	passwordLinkView
-} from "../controllers/views.controller.js";
+	passwordLinkView,
+	usersView
+} from "../controllers/views.controller.js"
 
-const router = Router();
+const router = Router()
 
 router
 	.get(
 		"/",
-		passportCall(passportStrategiesEnum.JWT),
-		handlePolicies([accessRolesEnum.USER, accessRolesEnum.ADMIN]),
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN]),
 		generateCustomResponse,
 		profile
 	)
 	.get(
 		"/realtimeproducts",
-		passportCall(passportStrategiesEnum.JWT),
-		handlePolicies([accessRolesEnum.USER, accessRolesEnum.ADMIN]),
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN]),
 		generateCustomResponse,
 		realTimeProductsView
 	)
 	.get(
 		"/products",
-		passportCall(passportStrategiesEnum.JWT),
-		handlePolicies([accessRolesEnum.USER, accessRolesEnum.ADMIN]),
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN]),
 		generateCustomResponse,
 		productsView
 	)
 	.get(
 		"/products/:pid",
-		passportCall(passportStrategiesEnum.JWT),
-		handlePolicies([accessRolesEnum.USER, accessRolesEnum.ADMIN]),
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN]),
 		generateCustomResponse,
 		productDetail
 	)
 	.get(
 		"/cart/detail",
-		passportCall(passportStrategiesEnum.JWT),
-		handlePolicies([accessRolesEnum.USER]),
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN]),
 		generateCustomResponse,
 		cartDetail
 	)
 	.get(
 		"/chat",
-		passportCall(passportStrategiesEnum.JWT),
-		handlePolicies([accessRolesEnum.USER]),
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.USER, accessRolesEnum.PREMIUM, accessRolesEnum.ADMIN]),
 		generateCustomResponse,
 		chat
 	)
 	.get(
 		"/register",
-		passportCall(passportStrategiesEnum.NOTHING),
-		handlePolicies([accessRolesEnum.PUBLIC]),
+		passportCallViews(passportStrategiesEnum.NOTHING),
+		handlePoliciesViews([accessRolesEnum.PUBLIC]),
 		generateCustomResponse,
 		register
 	)
 	.get(
 		"/login",
-		passportCall(passportStrategiesEnum.NOTHING),
-		handlePolicies([accessRolesEnum.PUBLIC]),
+		passportCallViews(passportStrategiesEnum.NOTHING),
+		handlePoliciesViews([accessRolesEnum.PUBLIC]),
 		generateCustomResponse,
 		login
 	)
 	.get(
 		"/password-link",
-		passportCall(passportStrategiesEnum.NOTHING),
-		handlePolicies([accessRolesEnum.PUBLIC]),
+		passportCallViews(passportStrategiesEnum.NOTHING),
+		handlePoliciesViews([accessRolesEnum.PUBLIC]),
 		generateCustomResponse,
 		passwordLinkView
 	)
 	.get(
 		"/reset-password",
-		passportCall(passportStrategiesEnum.NOTHING),
-		handlePolicies([accessRolesEnum.PUBLIC]),
+		passportCallViews(passportStrategiesEnum.NOTHING),
+		handlePoliciesViews([accessRolesEnum.PUBLIC]),
 		generateCustomResponse,
 		resetPasswordView
-	);
+	)
+	.get(
+		"/users",
+		passportCallViews(passportStrategiesEnum.JWT),
+		handlePoliciesViews([accessRolesEnum.ADMIN]),
+		generateCustomResponse,
+		usersView
+	)
 
-export default router;
+export default router

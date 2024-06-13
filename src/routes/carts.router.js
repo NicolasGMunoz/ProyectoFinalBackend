@@ -14,7 +14,7 @@ import {
 	purchaseProducts
 } from "../controllers/carts.controller.js";
 
-const router = Router()
+const router = Router();
 
 router
 	.get(
@@ -74,5 +74,4 @@ router
 		deleteCartProducts
 	);
 
-
-export default router
+export default router;

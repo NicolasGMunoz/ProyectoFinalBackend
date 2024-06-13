@@ -7,6 +7,7 @@ loginForm.addEventListener('submit', (e) => {
   data.forEach((value, key) => {
     obj[key] = value
   })
+  
   fetch('/api/sessions/login', {
     method: "POST",
     body: JSON.stringify(obj),
@@ -17,7 +18,10 @@ loginForm.addEventListener('submit', (e) => {
     if(result.status === 200){
       window.location.replace("/products")
     }
-    if(result.status === 400){
+    if(result.status === 401 || result.status === 400){
+      alert("Credenciales incorrectas")
+    }
+    if(result.status === 500){
       alert("Credenciales incorrectas")
     }
   })

@@ -33,7 +33,8 @@ const usersSchema = new mongoose.Schema({
 		default: "user"
 	},
 	last_connection: {
-		type: String
+		type: String,
+		required: false
 	},
 	documents: {
 		type: [
@@ -46,7 +47,7 @@ const usersSchema = new mongoose.Schema({
 	}
 });
 
-usersSchema.pre(["find", "findById", "findOne"], function () {
+usersSchema.pre(["find", "findById", "findOne", "findOneAndUpdate"], function () {
 	this.populate("cart");
 });
 

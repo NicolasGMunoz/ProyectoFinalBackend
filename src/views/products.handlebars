@@ -1,25 +1,92 @@
-<div>
-    <h2>Bienvenido {{user.name}} (<span>rol: {{user.role}}</span>)</h2>
-</div>
-<h1> LISTA DE PRODUCTOS</h1>
-<div>
-    {{#each products}}
-    <div>
-        <img src="{{this.thumbnail}}" alt="{{this.title}}">
-        <h2>{{this.title}}</h2>
-        <p>${{this.price}}</p>
-        <a href="/products/{{this._id}}" class="view-details-btn">Ver Detalles</a>
-    </div>
-    {{/each}}
-</div>
-<div>
-    {{#if hasPrevPage}}
-    <a href="?page={{prevPage}}&limit={{limit}}">Página Anterior</a>
-    {{/if}}
-    Página {{page}} de {{totalPages}}
-    {{#if hasNextPage}}
-    <a href="?page={{nextPage}}&limit={{limit}}">Página Siguiente</a>
-    {{/if}}
+<div style="display: flex; flex-direction: column;">
+	<div
+		style="display: flex; flex-direction:column; justify-content:center; align-items:center"
+	>
+		<div>
+			<h2>Bienvenido {{user.first_name}} {{user.last_name}} (<span>rol: {{user.role}}</span>)</h2>
+			
+		</div>
+		<h3 style="font-size: 2.5rem;">Formulario ingreso productos</h3>
+		<a
+			href="/api/sessions/logout"
+			style="position: absolute; right: 10px; top: 10px"
+		><button>Salir</button></a>
+		{{#if user.isAdmin }}
+				<a
+				href="/users"
+				style="position: absolute; right: 60px; top: 10px"
+			><button>Users</button></a>
+		{{/if}}
+				<a
+			href="/"
+			style="position: absolute; left: 10px; top: 10px"
+		><button>Perfil</button></a>
+		</a>
+				<a
+			href="/cart/detail"
+			style="position: absolute; left: 60px; top: 10px"
+		><button>Cart</button></a>
+		<form
+			action="/api/products/"
+			id="product-form"
+			style="display: flex; flex-direction: column; gap: 10px; width: 50%; padding-bottom: 1.5rem"
+		>
+			<label for="">Titulo</label>
+			<input type="text" name="title" id="title" />
+			<label for="">Descripción</label>
+			<input type="text" name="description" id="description" />
+			<label for="">Código</label>
+			<input type="text" name="code" id="code" />
+			<label for="category">Categoría</label>
+			<input type="text" name="category" id="category" />
+			<label for="price">Precio</label>
+			<input type="number" name="price" id="price" />
+			<label for="stock">Stock</label>
+			<input type="number" name="stock" id="stock" />
+			<div style="text-align: center;">
+				<button type="submit" style="padding: 5px 10px">Enviar</button>
+			</div>
+		</form>
+	</div>
+	<h1 style="text-align: center;">Productos</h1>
+	<div
+		id="container"
+		style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px; padding: 2rem 5rem;"
+	>
+		{{#each products}}
+			<section style="padding: 1.5rem;" id={{this.id}}>
+				<div
+					style="display: flex; flex-direction: column; gap: 25px; padding-bottom:0.8rem; height: 15rem; margin-bottom: 5px"
+				>
+					<h3 style="margin-bottom: 0;">{{this.title}}</h3>
+					<p style="margin: 0;">code: {{this.code}}</p>
+					<p style="margin: 0;">description: {{this.description}}</p>
+					<p style="margin: 0;">stock: {{this.stock}}</p>
+					<a href="/products/{{this._id}}" class="detalle-link">ver detalle</a>
+				</div>
+				<button class="delete-button">Eliminar</button>
+				<button class="add-button">Agregar carrito</button>
+			</section>
+		{{/each}}
+
+	</div>
+	<div
+		class="paginator"
+		id="paginator"
+		style="text-align: center; padding: 30px 25px; "
+	>
+		{{#if hasPrevPage}}
+			<a href={{prevLink}}><button class="page-button">Atrás</button></a>
+		{{else}}
+			<a><button class="page-button" disabled>Atrás</button></a>
+		{{/if}}
+		{{#if hasNextPage}}
+			<a href={{nextLink}}><button class="page-button">Siguiente</button></a>
+		{{else}}
+			<a><button class="page-button" disabled>Siguiente</button></a>
+		{{/if}}
+	</div>
 </div>
 <script src="/socket.io/socket.io.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/products.js"></script>

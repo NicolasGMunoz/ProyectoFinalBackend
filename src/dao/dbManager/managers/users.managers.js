@@ -1,4 +1,5 @@
-import usersModel from "./models/users.model.js";
+import usersModel from "./models/users.model.js"
+import { DateTime } from "luxon"
 
 export default class Users {
 	constructor() {}
@@ -12,7 +13,7 @@ export default class Users {
 	}
 
 	getById = async (uid) => {
-		const user = await usersModel.findById(uid)
+		const user = await usersModel.findById(uid).lean()
 		return user
 	}
 	getByEmail = async (email) => {
@@ -21,20 +22,21 @@ export default class Users {
 	}
 
 	signInSignOut = async (email) => {
-		const lastConnection = new Date().toLocaleString()
+		const lastConnection = DateTime.now().toFormat("dd/LL/yyyy, TT")
 		const result = await usersModel.findOneAndUpdate(
 			{ email },
 			{ last_connection: lastConnection }
 		)
 		return result
 	}
-	create = async ({ first_name, last_name, email, age, password }) => {
+	create = async ({ first_name, last_name, email, age, password, role }) => {
 		const result = await usersModel.create({
 			first_name,
 			last_name,
 			email,
 			age,
-			password
+			password,
+			role
 		})
 		return result
 	}
@@ -78,7 +80,6 @@ export default class Users {
 				_id: uid,
 				"documents.name": doc.name
 			})
-
 			if (existingDoc) {
 				await usersModel.updateOne(
 					{ _id: uid, "documents.name": doc.name },
@@ -94,5 +95,19 @@ export default class Users {
 
 		const userUpdated = await usersModel.findById(uid).lean()
 		return userUpdated
+	}
+
+	deleteInactiveUsers = async (inactiveUsers) => {
+		const usersEmail = inactiveUsers.map(user => user.email)
+		const usersCarts = inactiveUsers.map(user => user.cart._id)
+		console.log({usersEmail, usersCarts})
+		const deletedCarts = await usersModel.deleteMany({ _id: usersCarts })
+		const deletedUsers = await usersModel.deleteMany({ email: usersEmail })
+		return deletedUsers
+	}
+
+	deleteOneUser = async (uid) => {
+		const result = await usersModel.findByIdAndDelete(uid)
+		return result
 	}
 }

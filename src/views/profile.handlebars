@@ -1,6 +1,6 @@
 <div>
   <h1>Tu perfil</h1>
-  <p>Nombre: {{user.name}}</p>
+  <p>Nombre: {{user.first_name}} {{user.last_name}}</p>
   <p>Correo: {{user.email}}</p>
   {{#if user.age }}
   <p>Edad: {{user.age}}</p>
@@ -8,4 +8,7 @@
   <p>Rol: {{user.role}}</p>
   <a href="/api/sessions/logout"><button>Salir</button></a>
   <a href="/products"><button>Products</button></a>
+  {{#if user.isAdmin}}
+    <a href="/users"><button>Users</button></a>
+  {{/if}}
 </div>
