@@ -10,10 +10,10 @@ import { __mainDirname } from "./util.js"
 import configs from "./config.js";
 import { initializePassport } from "./config/passport.config.js";
 import passport from "passport";
-import SessionsRouter from "./routes/sessions.routes.js";
-import ProductsRouter from "./routes/products.routes.js";
-import CartsRouter from "./routes/carts.routes.js";
-import ViewsRouter from "./routes/views.routes.js";
+import SessionsRouter from "./routes/sessions.router.js";
+import ProductsRouter from "./routes/products.router.js";
+import CartsRouter from "./routes/carts.router.js";
+import ViewsRouter from "./routes/views.router.js";
 import UsersRouter from "./routes/users.router.js"
 import errorHandler from './middlewares/errors/index.js';
 import { addLogger } from "./utils/logger.js";
